@@ -1,7 +1,7 @@
 public class Sudoku {
-    private int[][] board;
-    private int N;
-    private int SRN;
+    private final int[][] board;
+    private final int N;
+    private final int SRN;
     public Sudoku(int N){
         this.N = N;
         SRN = (int) Math.sqrt(N);
@@ -39,15 +39,22 @@ public class Sudoku {
     private int generateRandomInt(int upperLim){
         return (int) (Math.random()*upperLim)+1;
     }
-    public void fillBlock(int startingRow,int startingCol){
-
+    private void fillBlock(int startingRow,int startingCol){
+        int num;
+        for(int i=0;i<SRN;i++){
+            for(int j=0;j<SRN;j++){
+                num = generateRandomInt(N);
+                if(validInCell(startingRow,startingCol,num));
+                board[startingRow+i][startingCol+j]=num;
+            }
+        }
     }
-    public void fillDiagonalCells(){
+    private void fillDiagonalCells(){
         for(int i=0;i<N;i+=3){
             fillBlock(i,i);
         }
     }
-    public void fillRemaining(){
+    private void fillRemaining(){
 
     }
     public void fillBoard(){
