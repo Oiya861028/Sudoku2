@@ -44,8 +44,7 @@ public class Sudoku {
         for(int i=0;i<SRN;i++){
             for(int j=0;j<SRN;j++){
                 num = generateRandomInt(N);
-                if(validInCell(startingRow,startingCol,num));
-                board[startingRow+i][startingCol+j]=num;
+                if(validInCell(startingRow, startingCol, num)) board[startingRow+i][startingCol+j]=num;
             }
         }
     }
@@ -54,12 +53,43 @@ public class Sudoku {
             fillBlock(i,i);
         }
     }
-    private void fillRemaining(){
+    private boolean fillRemaining(int row, int col){
+        if(col >=N && row <N){ //if the end of the row is reached, move to next row
+            col =0;
+            row++;
+        }
+        if(col>=N && row>=N) return true; //if the end of the board is reached
 
+        //skip diagonals
+        if(row<SRN){ //top left
+            if(col<SRN){
+                col= SRN;
+            }
+        }
+        else if(row<N-SRN){ //middle
+            if(col==(row/SRN)*SRN){
+                col+=SRN;
+            }
+        }
+        else{ //bottom right
+            if(col>=N){
+                row++;
+                col=0;
+                if(row>=N) return true;
+            }
+        }
+        for(int num=1;num<=N;num++){
+            if(isValidNum(calcStartingRowOrCol(row), calcStartingRowOrCol(col), num)){
+                board[row][col] = num;
+                if(fillRemaining(row, col+1)) return true;
+                board[row][col] = 0;
+            }
+        }
+        return false;
     }
     public void fillBoard(){
         fillDiagonalCells();
-        fillRemaining();
+        fillRemaining(0, SRN);
     }
     public void printBoard(){
         for(int i=0;i<N;i++){
