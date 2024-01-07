@@ -19,11 +19,19 @@ public class Sudoku {
         }
         return true;
     }
-    private int findStartingCoord(int row, int col){
-        return row-row*SRN col-col*SRN;
+    private int calcStartingRowOrCol(int n){
+        return n-n*SRN;
     }
-    private boolean validInCell(int startingRow, int startingCol, int num){
 
+    private boolean validInCell(int row, int col, int num){
+        row = calcStartingRowOrCol(row);
+        col = calcStartingRowOrCol(col);
+        for(int i=0;i<SRN;i++){
+            for(int j=0;j<SRN;j++){
+                if(board[row+i][col+j]==num) return false;
+            }
+        }
+        return true;
     }
     private boolean isValidNum(int startingRow, int startingCol, int num){
         return (validInCell(startingRow,startingCol,num) && validInCol(startingCol,num) && validInRow(startingRow,num));
@@ -31,9 +39,13 @@ public class Sudoku {
     private int generateRandomInt(int upperLim){
         return (int) (Math.random()*upperLim)+1;
     }
+    public void fillBlock(int startingRow,int startingCol){
 
+    }
     public void fillDiagonalCells(){
-
+        for(int i=0;i<N;i+=3){
+            fillBlock(i,i);
+        }
     }
     public void fillRemaining(){
 
